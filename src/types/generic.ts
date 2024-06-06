@@ -7,6 +7,9 @@ import {
 	INVALID_TOKEN_STATUS,
 	NOT_FOUND_STATUS,
 } from '../helpers/constants';
+import { DatabaseInterface } from './db';
+import Utils from '../helpers/utils';
+import CacheService from '../config/CacheService';
 
 export enum ReturnStatus {
 	OK = OK_STATUS,
@@ -20,9 +23,17 @@ export enum ReturnStatus {
 export type ReturnFunction<T> = (
 	success: boolean,
 	message: string,
-	returnStatus: ReturnStatus,
+	returnStatus: string,
 	data: T
 ) => {};
+
+export type ResultObject<T> = {
+	success: boolean;
+	message: string;
+	code: number;
+	returnStatus: string;
+	data: T;
+};
 
 export interface DBTimeLogs {
 	createdAt?: Date;
@@ -39,4 +50,17 @@ export interface IPaging {
 	page: number;
 	limit: number;
 	search?: string;
+}
+
+export interface IPagingQuery {
+	skip: number;
+	limit: number;
+	populate: string[];
+	sort: string;
+}
+
+export interface IDefaultDeps {
+	db: DatabaseInterface;
+	_utilsService: Utils;
+	_cacheService: CacheService;
 }

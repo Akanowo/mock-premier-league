@@ -1,4 +1,6 @@
-import { Types } from 'mongoose';
+import { Document, Types } from 'mongoose';
+import { ILogDeps } from './Log';
+import { DBTimeLogs, IDefaultDeps } from './generic';
 
 export interface ITeam {
 	name: string;
@@ -96,3 +98,7 @@ export interface IFixtureClock {
 	seconds: number;
 	label: string;
 }
+
+export interface ITeamDeps extends ILogDeps, IDefaultDeps {}
+
+export interface ITeamDocument extends Document, DBTimeLogs, ITeam {}

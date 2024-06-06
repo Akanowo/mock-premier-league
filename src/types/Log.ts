@@ -1,4 +1,4 @@
-import { LogEntry } from 'winston';
+import { LogEntry, Logger } from 'winston';
 import { DBTimeLogs } from './generic';
 import { Document } from 'mongoose';
 
@@ -13,3 +13,7 @@ export interface ILog extends LogEntry {
 }
 
 export interface LogDocument extends DBTimeLogs, Document, ILog {}
+
+export interface ILogDeps {
+	_loggerService: Logger;
+}

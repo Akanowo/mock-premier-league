@@ -16,7 +16,7 @@ export function createDatabase(config: IDBConfig): DatabaseInterface {
 	}
 }
 
-export function initDb() {
+export function dbFactory() {
 	const dbConfig: IDBConfig = {
 		type: 'mongodb',
 		uri: config.DATABASE_URL,

@@ -1,12 +1,18 @@
 // mongooseDatabase.ts
 import mongoose, {
+	FilterQuery,
 	Model,
 	ModifyResult,
+	Query,
+	QueryOptions,
 	Schema,
 	UpdateWriteOpResult,
 } from 'mongoose';
 import { DatabaseInterface } from '../types/db';
 import chalk from 'chalk';
+import { ModelMap } from '../models';
+import { Document } from 'mongoose';
+import { IPagingQuery } from '../types/generic';
 
 export class MongooseDatabase implements DatabaseInterface {
 	private uri: string;
@@ -30,54 +36,83 @@ export class MongooseDatabase implements DatabaseInterface {
 		await mongoose.disconnect();
 	}
 
-	private getModel<T>(collection: string): Model<any> {
-		return mongoose.model<T>(collection, new Schema({}, { strict: false }));
+	private getModel<T extends Document>(collection: string): Model<T> {
+		return ModelMap[collection];
 	}
 
-	async create<T>(
+	async create<T extends Document>(
 		collection: string,
 		data: any,
-		options: any = {}
+		options: QueryOptions<T> = {}
 	): Promise<T> {
-		const Model = this.getModel(collection);
-		return new Model(data).save(options);
+		const Model = this.getModel<T>(collection);
+		return Model.create(data);
 	}
 
-	async findOne<T>(
+	async count<T extends Document>(
 		collection: string,
 		query: any,
-		options: any = {}
-	): Promise<any> {
+		options: QueryOptions<T> = {}
+	): Promise<number> {
 		const Model = this.getModel<T>(collection);
-		return Model.findOne<T>(query, null, options).exec();
+		return Model.countDocuments(query);
 	}
 
-	async find<T>(collection: string, query: any, options?: any): Promise<T[]> {
+	async findOne<T extends Document>(
+		collection: string,
+		query: any,
+		options: QueryOptions<T> = {}
+	): Promise<Query<any, T>> {
+		const Model = this.getModel<T>(collection);
+		return Model.findOne(query, null, options).exec();
+	}
+
+	async find<T extends Document>(
+		collection: string,
+		query: any,
+		options?: QueryOptions<T>
+	): Promise<Query<any, T>> {
 		const Model = this.getModel<T>(collection);
 		return Model.find<T>(query, null, options).exec();
 	}
 
-	async updateOne<T>(
+	async updateOne<T extends Document>(
 		collection: string,
 		query: any,
 		data: any,
-		options?: any
-	): Promise<ModifyResult<T>> {
-		const Model = this.getModel(collection);
+		options?: QueryOptions<T>
+	): Promise<any> {
+		const Model = this.getModel<T>(collection);
 		return Model.findOneAndUpdate(query, data, options).exec();
 	}
 
-	async updateMany(
+	async updateMany<T extends Document>(
 		collection: string,
 		query: any,
 		data: any
 	): Promise<UpdateWriteOpResult> {
-		const Model = this.getModel(collection);
+		const Model = this.getModel<T>(collection);
 		return Model.updateMany(query, data).exec();
 	}
 
-	async delete(collection: string, query: any): Promise<any> {
-		const Model = this.getModel(collection);
+	async delete<T extends Document>(
+		collection: string,
+		query: any
+	): Promise<any> {
+		const Model = this.getModel<T>(collection);
 		return Model.deleteMany(query).exec();
+	}
+
+	async paginate<T extends Document>(
+		collection: string,
+		query: FilterQuery<T>,
+		paginationDetails: IPagingQuery
+	) {
+		const Model = this.getModel<T>(collection);
+		return Model.find(query)
+			.sort(paginationDetails.sort)
+			.skip(paginationDetails.skip)
+			.limit(paginationDetails.limit)
+			.populate(paginationDetails.populate);
 	}
 }

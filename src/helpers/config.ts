@@ -12,7 +12,7 @@ export const config = {
 	REDIS_PASSWORD: redisPassword,
 	REDIS_HOST: redisHost,
 	REDIS_PORT: redisPort,
-	JWT_HASH: process.env.JWT_HASH || '',
+	JWT_SECRET: process.env.JWT_SECRET || '',
 	nodeEnv: process.env.NODE_ENV || 'development',
 	EXPIRATION_TIME: Number(process.env.EXPIRATION_TIME) || 20,
 	DEFAULT_PAGE: 1,
