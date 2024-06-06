@@ -85,3 +85,8 @@ export const OBJECTID_ARRAY_AND_REQUIRED = {
 // COLLECTION NAMES
 export const API_REQUEST_COLLECTION_NAME = 'ApiRequest';
 export const API_ERROR_COLLECTION_NAME = 'ApiError';
+export const TEAM_COLLECTION = 'Team';
+export const FIXTURE_COLLECTION = 'Fixture';
+export const TEAM_STATS_COLLECTION = 'TeamStat';
+export const PLAYER_COLLECTION = 'Player';
+export const USER_COLLECTION = 'User';

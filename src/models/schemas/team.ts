@@ -33,4 +33,8 @@ const teamSchema = new Schema<ITeam>(
 	opts
 );
 
+teamSchema.index({ name: 1 });
+teamSchema.index({ coach: 1 });
+teamSchema.index({ 'stadium.name': 1 });
+
 export { teamSchema };

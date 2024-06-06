@@ -45,4 +45,11 @@ const playerSchema = new Schema<IPlayer>(
 	opts
 );
 
+playerSchema.pre('save', function (next) {
+	const first = this.get('name.first');
+	const last = this.get('name.last');
+	this.set('name.display', `${first} ${last}`);
+	next();
+});
+
 export { playerSchema };
