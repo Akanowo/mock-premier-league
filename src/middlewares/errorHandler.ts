@@ -2,11 +2,13 @@ import { ErrorRequestHandler, NextFunction, Request, Response } from 'express';
 import { MongoError } from 'mongodb';
 import { Error as MongooseError } from 'mongoose';
 import { AxiosError } from 'axios';
-import { ResultFunction, errorData } from '../helpers/utils';
 import { config } from '../helpers/config';
 import { JsonWebTokenError } from 'jsonwebtoken';
 import { ReturnStatus } from '../types/generic';
-import { LoggerFactory } from '../services/factories';
+import { LoggerFactory, UtilsFactory } from '../services/factories';
+
+const _utilsService = UtilsFactory();
+const { errorData, ResultFunction } = _utilsService;
 
 const logger = LoggerFactory().logger;
 

@@ -5,7 +5,9 @@ import {
 	NUMBER_AND_REQUIRED,
 	STRING_AND_REQUIRED,
 } from '../../helpers/constants';
-import { opts } from '../../helpers/utils';
+import Utils from '../../helpers/utils';
+
+const opts = Utils.opts;
 
 const stadiumSchema = new Schema<IStadium>(
 	{

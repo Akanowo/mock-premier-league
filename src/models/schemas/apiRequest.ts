@@ -1,5 +1,7 @@
 import mongoose from 'mongoose';
-import { opts } from '../../helpers/utils';
+import Utils from '../../helpers/utils';
+
+const opts = Utils.opts;
 
 const apiRequestSchema = new mongoose.Schema(
 	{

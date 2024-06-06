@@ -1,5 +1,6 @@
 import CacheService from '../../config/CacheService';
 import SessionStore from '../../config/SessionStore';
+import Utils from '../../helpers/utils';
 import Logger from '../Logger';
 
 const LoggerFactory = () => {
@@ -10,8 +11,17 @@ const SessionStoreFactory = () => {
 	return new SessionStore();
 };
 
-const CacheServiceFactory = () => {
-	return new CacheService(LoggerFactory().logger);
+const UtilsFactory = () => {
+	return new Utils();
 };
 
-export { LoggerFactory, SessionStoreFactory, CacheServiceFactory };
+const CacheServiceFactory = () => {
+	return new CacheService(LoggerFactory().logger, UtilsFactory());
+};
+
+export {
+	LoggerFactory,
+	SessionStoreFactory,
+	CacheServiceFactory,
+	UtilsFactory,
+};

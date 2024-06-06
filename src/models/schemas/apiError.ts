@@ -1,10 +1,12 @@
 import mongoose from 'mongoose';
 import { ILog } from '../../types/Log';
-import { opts } from '../../helpers/utils';
 import {
 	STRING_AND_OPTIONAL,
 	STRING_AND_REQUIRED,
 } from '../../helpers/constants';
+import Utils from '../../helpers/utils';
+
+const opts = Utils.opts;
 
 const apiLogSchema = new mongoose.Schema<ILog>(
 	{

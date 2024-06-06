@@ -1,9 +1,11 @@
 import { Request, Response, NextFunction } from 'express';
 import { ReasonPhrases, StatusCodes } from 'http-status-codes';
-import { ResultFunction } from '../helpers/utils';
+import { UtilsFactory } from '../services/factories';
+
+const _utilsService = UtilsFactory();
 
 const notFoundHandler = (req: Request, res: Response, next: NextFunction) => {
-	const data = ResultFunction(
+	const data = _utilsService.ResultFunction(
 		false,
 		ReasonPhrases.NOT_FOUND,
 		StatusCodes.NOT_FOUND,

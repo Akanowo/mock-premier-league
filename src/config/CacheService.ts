@@ -1,14 +1,16 @@
 import { Logger } from 'winston';
 import RedisClient from './RedisClient';
-import { errorData } from '../helpers/utils';
+import Utils from '../helpers/utils';
 
 class CacheService {
 	private client;
 	private loggerService: Logger;
+	private _utilsService: Utils;
 
-	constructor(loggerService: Logger) {
+	constructor(loggerService: Logger, utilsService: Utils) {
 		this.client = RedisClient.getInstance().getClient();
 		this.loggerService = loggerService;
+		this._utilsService = utilsService;
 	}
 
 	public async getCachedData<T>(key: string): Promise<T | null> {
@@ -16,7 +18,9 @@ class CacheService {
 			const data = await this.client.get(key);
 			return data ? JSON.parse(data) : null;
 		} catch (err) {
-			this.loggerService.error(errorData(err, 'getCachedData'));
+			this.loggerService.error(
+				this._utilsService.errorData(err, 'getCachedData')
+			);
 			return null;
 		}
 	}
@@ -31,7 +35,9 @@ class CacheService {
 				EX: ttl,
 			});
 		} catch (err) {
-			this.loggerService.error(errorData(err, 'setCachedData'));
+			this.loggerService.error(
+				this._utilsService.errorData(err, 'setCachedData')
+			);
 		}
 	}
 }
