@@ -3,9 +3,11 @@ import SessionStore from '../../config/SessionStore';
 import { dbFactory } from '../../database/dbFactory';
 import Utils from '../../helpers/utils';
 import { IAuthDeps } from '../../types/Auth';
-import { ITeamDeps } from '../../types/League';
+import { IFixtureDeps, IPlayerDeps, ITeamDeps } from '../../types/League';
 import Logger from '../Logger';
 import Auth from '../classes/Auth';
+import Fixture from '../classes/Fixture';
+import Player from '../classes/Player';
 import Team from '../classes/Team';
 
 const LoggerFactory = () => {
@@ -46,6 +48,30 @@ const TeamFactory = () => {
 	return new Team(deps);
 };
 
+const FixtureFactory = () => {
+	const deps: IFixtureDeps = {
+		db: dbFactory(),
+		_cacheService: CacheServiceFactory(),
+		_loggerService: LoggerFactory().logger,
+		_utilsService: UtilsFactory(),
+		_teamService: TeamFactory(),
+	};
+
+	return new Fixture(deps);
+};
+
+const PlayerFactory = () => {
+	const deps: IPlayerDeps = {
+		db: dbFactory(),
+		_cacheService: CacheServiceFactory(),
+		_loggerService: LoggerFactory().logger,
+		_utilsService: UtilsFactory(),
+		_teamService: TeamFactory(),
+	};
+
+	return new Player(deps);
+};
+
 export {
 	LoggerFactory,
 	SessionStoreFactory,
@@ -53,4 +79,6 @@ export {
 	UtilsFactory,
 	AuthFactory,
 	TeamFactory,
+	FixtureFactory,
+	PlayerFactory,
 };

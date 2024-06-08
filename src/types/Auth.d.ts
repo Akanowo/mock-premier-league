@@ -14,8 +14,8 @@ export interface ILogin {
 }
 
 export interface IAuth {
-	signup: (input: ISignup) => Promise<ReturnObject<any>>;
-	login: (input: ILogin) => Promise<ReturnObject<any>>;
+	signup: (input: ISignup, fromAdmin?: boolean) => Promise<ReturnObject<any>>;
+	login: (input: ILogin, fromAdmin?: boolean) => Promise<ReturnObject<any>>;
 }
 
 export interface IAuthDeps extends ILogDeps, IDefaultDeps {}

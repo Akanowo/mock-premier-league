@@ -1,19 +1,10 @@
 import { NextFunction, Request, Response } from 'express';
-import { TeamFactory, UtilsFactory } from '../services/factories';
+import { FixtureFactory, UtilsFactory } from '../services/factories';
 
-const factory = TeamFactory();
+const factory = FixtureFactory();
 const _utilsService = UtilsFactory();
 
-export const createTeam = async (
-	req: Request,
-	res: Response,
-	next: NextFunction
-) => {
-	const response = await factory.create(req.body);
-	return res.status(response.code).json(response);
-};
-
-export const getAllTeams = async (
+export const getAllFixtures = async (
 	req: Request,
 	res: Response,
 	next: NextFunction
@@ -23,7 +14,7 @@ export const getAllTeams = async (
 	return res.status(response.code).json(response);
 };
 
-export const getOneTeam = async (
+export const getOneFixture = async (
 	req: Request,
 	res: Response,
 	next: NextFunction
@@ -32,7 +23,16 @@ export const getOneTeam = async (
 	return res.status(response.code).json(response);
 };
 
-export const editTeam = async (
+export const createFixture = async (
+	req: Request,
+	res: Response,
+	next: NextFunction
+) => {
+	const response = await factory.create(req.body);
+	return res.status(response.code).json(response);
+};
+
+export const editFixture = async (
 	req: Request,
 	res: Response,
 	next: NextFunction
@@ -41,7 +41,7 @@ export const editTeam = async (
 	return res.status(response.code).json(response);
 };
 
-export const deleteTeam = async (
+export const deleteFixture = async (
 	req: Request,
 	res: Response,
 	next: NextFunction

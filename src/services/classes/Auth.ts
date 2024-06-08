@@ -11,7 +11,10 @@ class Auth implements IAuth {
 		this.deps = deps;
 	}
 
-	public async signup(input: ISignup): Promise<ResultObject<any>> {
+	public async signup(
+		input: ISignup,
+		fromAdmin?: boolean
+	): Promise<ResultObject<any>> {
 		const { db, _utilsService, _loggerService } = this.deps;
 
 		try {
@@ -37,7 +40,7 @@ class Auth implements IAuth {
 				},
 				email: input.email,
 				password: await _utilsService.createHash(input.password),
-				accountType: 'user',
+				accountType: fromAdmin ? 'admin' : 'user',
 			};
 
 			const user = await db.create<IUserDocument>(
@@ -66,14 +69,22 @@ class Auth implements IAuth {
 		}
 	}
 
-	public async login(input: ILogin): Promise<ResultObject<any>> {
+	public async login(
+		input: ILogin,
+		fromAdmin?: boolean
+	): Promise<ResultObject<any>> {
 		const { db, _loggerService, _utilsService, _cacheService } = this.deps;
 		const errorMessage = 'invalid username or password';
 		try {
-			// find user
-			const user: IUserDocument | null = await db.findOne(USER_COLLECTION, {
+			let query = {
 				email: input.email,
-			});
+				accountType: fromAdmin ? 'admin' : 'user',
+			};
+			// find user
+			const user: IUserDocument | null = await db.findOne(
+				USER_COLLECTION,
+				query
+			);
 
 			if (!user)
 				return _utilsService.ResultFunction(

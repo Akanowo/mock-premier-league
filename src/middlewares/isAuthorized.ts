@@ -1,13 +1,24 @@
 import { NextFunction, Request, Response } from 'express';
+import { ReasonPhrases, StatusCodes } from 'http-status-codes';
+import { UtilsFactory } from '../services/factories';
 
-const isAuthorize =
-	(...roles: string[]) =>
+const _utilsService = UtilsFactory();
+
+const isAuthorized =
+	(...roles: ('admin' | 'user')[]) =>
 	(_: Request, res: Response, next: NextFunction) => {
 		if (!roles.includes(res.locals.user.accountType)) {
-			return next(new Error('Not allowed'));
+			const response = _utilsService.ResultFunction(
+				false,
+				ReasonPhrases.FORBIDDEN,
+				StatusCodes.FORBIDDEN,
+				ReasonPhrases.FORBIDDEN,
+				null
+			);
+			return res.status(response.code).json(response);
 		}
 
 		return next();
 	};
 
-export default isAuthorize;
+export default isAuthorized;

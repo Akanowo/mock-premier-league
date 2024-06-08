@@ -106,6 +106,28 @@ class Utils {
 			return error as JsonWebTokenError;
 		}
 	}
+
+	flattenObject(
+		obj: Record<string, any>,
+		parent: string = '',
+		res: Record<string, any> = {}
+	) {
+		for (let key in obj) {
+			if (obj.hasOwnProperty(key)) {
+				const propName = parent ? `${parent}.${key}` : key;
+				if (
+					typeof obj[key] === 'object' &&
+					obj[key] !== null &&
+					!Array.isArray(obj[key])
+				) {
+					this.flattenObject(obj[key], propName, res);
+				} else {
+					res[propName] = obj[key];
+				}
+			}
+		}
+		return res;
+	}
 }
 
 export default Utils;

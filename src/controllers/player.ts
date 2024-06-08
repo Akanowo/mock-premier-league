@@ -1,10 +1,10 @@
 import { NextFunction, Request, Response } from 'express';
-import { TeamFactory, UtilsFactory } from '../services/factories';
+import { PlayerFactory, UtilsFactory } from '../services/factories';
 
-const factory = TeamFactory();
+const factory = PlayerFactory();
 const _utilsService = UtilsFactory();
 
-export const createTeam = async (
+export const createPlayer = async (
 	req: Request,
 	res: Response,
 	next: NextFunction
@@ -13,39 +13,43 @@ export const createTeam = async (
 	return res.status(response.code).json(response);
 };
 
-export const getAllTeams = async (
+export const getAllPlayers = async (
 	req: Request,
 	res: Response,
 	next: NextFunction
 ) => {
 	const pagination = _utilsService.extractPaginationFromQuery(req.query);
-	const response = await factory.getAll(pagination);
+	const response = await factory.getAll(req.params.teamId, pagination);
 	return res.status(response.code).json(response);
 };
 
-export const getOneTeam = async (
+export const getOnePlayer = async (
 	req: Request,
 	res: Response,
 	next: NextFunction
 ) => {
-	const response = await factory.getOne(req.params.id);
+	const response = await factory.getOne(req.params.teamId, req.params.playerId);
 	return res.status(response.code).json(response);
 };
 
-export const editTeam = async (
+export const editPlayer = async (
 	req: Request,
 	res: Response,
 	next: NextFunction
 ) => {
-	const response = await factory.edit(req.params.id, req.body);
+	const response = await factory.edit(
+		req.params.teamId,
+		req.params.playerId,
+		req.body
+	);
 	return res.status(response.code).json(response);
 };
 
-export const deleteTeam = async (
+export const deletePlayer = async (
 	req: Request,
 	res: Response,
 	next: NextFunction
 ) => {
-	const response = await factory.delete(req.params.id);
+	const response = await factory.delete(req.params.teamId, req.params.playerId);
 	return res.status(response.code).json(response);
 };

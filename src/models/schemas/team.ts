@@ -32,11 +32,15 @@ const teamSchema = new Schema<ITeam>(
 		startingPosition: NUMBER_AND_REQUIRED,
 		stadium: stadiumSchema,
 	},
-	opts
+	{ ...opts, toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
 
-teamSchema.index({ name: 1 });
-teamSchema.index({ coach: 1 });
-teamSchema.index({ 'stadium.name': 1 });
+teamSchema.virtual('players', {
+	localField: '_id',
+	foreignField: 'currentTeam',
+	ref: 'Player',
+});
+
+teamSchema.index({ name: 'text', coach: 'text', 'stadium.name': 'text' });
 
 export { teamSchema };

@@ -41,7 +41,7 @@ const playerSchema = new Schema<IPlayer>(
 		nationality: STRING_AND_REQUIRED,
 		heightInCM: NUMBER_AND_REQUIRED,
 		position: STRING_AND_REQUIRED,
-		currentTeamId: { ...OBJECTID_AND_REQUIRED, ref: 'Team' },
+		currentTeam: { ...OBJECTID_AND_REQUIRED, ref: 'Team' },
 		info: teamInfoObj,
 	},
 	opts

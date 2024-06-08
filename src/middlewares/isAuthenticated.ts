@@ -19,12 +19,17 @@ const isAuthenticated = async (
 	res: Response,
 	next: NextFunction
 ) => {
+	const response = _utilsService.ResultFunction(
+		false,
+		'invalid or expired token',
+		StatusCodes.UNAUTHORIZED,
+		ReasonPhrases.UNAUTHORIZED,
+		null
+	);
 	const token = req.headers.authorization?.split(' ')[1];
 
 	if (!token) {
-		return res
-			.status(401)
-			.json({ message: 'Access token is missing or invalid' });
+		return res.status(response.code).json(response);
 	}
 
 	try {
@@ -32,20 +37,15 @@ const isAuthenticated = async (
 		const session = await _cacheService.getCachedData(`sess:${decoded.id}`);
 
 		if (!session) {
-			return res.status(401).json({ message: 'Session is invalid or expired' });
+			return res.status(response.code).json(response);
 		}
 
 		res.locals.user = session;
 		next();
 	} catch (error) {
 		_loggerService.error(_utilsService.errorData(error, 'isAuthenticated'));
-		const response = _utilsService.ResultFunction(
-			false,
-			ReasonPhrases.UNAUTHORIZED,
-			StatusCodes.UNAUTHORIZED,
-			ReasonPhrases.UNAUTHORIZED,
-			null
-		);
+		response.code = StatusCodes.UNPROCESSABLE_ENTITY;
+		response.message = 'something went wrong';
 		return res.status(response.code).json(response);
 	}
 };

@@ -1,8 +1,9 @@
 import { Document, Types } from 'mongoose';
 import { ILogDeps } from './Log';
-import { DBTimeLogs, IDefaultDeps } from './generic';
+import { DBTimeLogs, IDefaultDeps, IPaging } from './generic';
+import Team from '../services/classes/Team';
 
-export interface ITeam {
+export interface ITeam extends DBTimeLogs {
 	name: string;
 	stadium: IStadium;
 	coach: string;
@@ -40,27 +41,33 @@ export interface ITeamStatsBreakdown {
 	won: number;
 }
 
-export interface IPlayer {
-	name: {
-		first: string;
-		last: string;
-		display: string;
-	};
-	birthDetails: {
-		date: Date;
-		place: string;
-		age: string;
-	};
+export interface IPlayerName {
+	first: string;
+	last: string;
+	display: string;
+}
+
+export interface IPlayerBirthDetails {
+	date: Date;
+	place: string;
+	age: number;
+}
+
+export interface IPlayerInfo {
+	loan: boolean;
+	position: string;
+	positionInfo: string;
+	shirtNumber: number;
+}
+
+export interface IPlayer extends DBTimeLogs {
+	name: IPlayerName;
+	birthDetails: IPlayerBirthDetails;
 	position: string;
 	nationality: string;
 	heightInCM: number;
-	currentTeamId: Types.ObjectId | ITeam;
-	info: {
-		loan: boolean;
-		position: string;
-		positionInfo: string;
-		shirtNumber: number;
-	};
+	currentTeam: Types.ObjectId | ITeam;
+	info: IPlayerInfo;
 }
 
 export type FixtureStatusTypes =
@@ -75,15 +82,19 @@ export enum FixtureOutcomeEnum {
 	drawn = 'D',
 }
 
-export interface IFixture {
-	teams: Types.ObjectId[] | ITeam[];
+export type FixtureVenue = Omit<IStadium, 'capacity' | 'location'>;
+
+export interface IFixture extends DBTimeLogs {
+	homeTeam: Types.ObjectId | ITeam;
+	awayTeam: Types.ObjectId | ITeam;
 	gameweek: number;
-	attendance: number;
-	venue: Omit<IStadium, 'capacity' | 'location'>;
-	goals: IFixtureGoal[];
-	clock: IFixtureClock;
+	venue: FixtureVenue;
 	status: FixtureStatusTypes;
-	outcome: FixtureOutcomeEnum;
+	teamsDetails: Partial<ITeam>[];
+	attendance?: number;
+	clock?: IFixtureClock;
+	outcome?: FixtureOutcomeEnum;
+	goals?: IFixtureGoal[];
 }
 
 export interface IFixtureGoal {
@@ -100,5 +111,17 @@ export interface IFixtureClock {
 }
 
 export interface ITeamDeps extends ILogDeps, IDefaultDeps {}
+export interface IFixtureDeps extends ILogDeps, IDefaultDeps {
+	_teamService: Team;
+}
+export interface IPlayerDeps extends ILogDeps, IDefaultDeps {
+	_teamService: Team;
+}
 
-export interface ITeamDocument extends Document, DBTimeLogs, ITeam {}
+export interface ITeamDocument extends Document, ITeam {}
+export interface IFixtureDocument extends Document, IFixture {}
+export interface IPlayerDocument extends Document, IPlayer {}
+
+export interface IGetFixtureQuery extends IPaging {
+	status?: FixtureStatusTypes;
+}

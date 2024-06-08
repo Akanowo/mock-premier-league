@@ -1,57 +1,52 @@
 import { Router } from 'express';
 import joiMiddleware from '../middlewares/joiMiddleware';
 import {
-	createFixtureValidator,
-	editFixtureValidator,
-	getFixturesQueryValidator,
+	createPlayerValidator,
+	editPlayerValidator,
 	objectIdValidator,
 	pagingValidator,
 } from '../validators';
 import {
-	createFixture,
-	deleteFixture,
-	editFixture,
-	getAllFixtures,
-	getOneFixture,
+	createPlayer,
+	deletePlayer,
+	editPlayer,
+	getAllPlayers,
+	getOnePlayer,
 } from '../controllers';
 import isAuthenticated from '../middlewares/isAuthenticated';
 import isAuthorized from '../middlewares/isAuthorized';
 
-const fixtureRouter = Router();
+const playerRouter = Router({ mergeParams: true });
 
-fixtureRouter
+playerRouter
 	.route('/')
-	.get(
-		isAuthenticated,
-		joiMiddleware(getFixturesQueryValidator, 'query'),
-		getAllFixtures
-	)
+	.get(isAuthenticated, joiMiddleware(pagingValidator, 'query'), getAllPlayers)
 	.post(
 		isAuthenticated,
 		isAuthorized('admin'),
-		joiMiddleware(createFixtureValidator),
-		createFixture
+		joiMiddleware(createPlayerValidator),
+		createPlayer
 	);
 
-fixtureRouter
-	.route('/:id')
+playerRouter
+	.route('/:playerId')
 	.get(
 		isAuthenticated,
 		joiMiddleware(objectIdValidator, 'params'),
-		getOneFixture
+		getOnePlayer
 	)
 	.put(
 		isAuthenticated,
 		isAuthorized('admin'),
 		joiMiddleware(objectIdValidator, 'params'),
-		joiMiddleware(editFixtureValidator),
-		editFixture
+		joiMiddleware(editPlayerValidator),
+		editPlayer
 	)
 	.delete(
 		isAuthenticated,
 		isAuthorized('admin'),
 		joiMiddleware(objectIdValidator, 'params'),
-		deleteFixture
+		deletePlayer
 	);
 
-export default fixtureRouter;
+export default playerRouter;

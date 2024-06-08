@@ -8,7 +8,9 @@ export const loginController = async (
 	res: Response,
 	next: NextFunction
 ) => {
-	const response = await factory.login(req.body);
+	const paths = req.originalUrl.split('/');
+	const fromAdmin = paths.includes('admin');
+	const response = await factory.login(req.body, fromAdmin);
 	return res.status(response.code).json(response);
 };
 
@@ -17,6 +19,9 @@ export const signupController = async (
 	res: Response,
 	next: NextFunction
 ) => {
-	const response = await factory.signup(req.body);
+	// check if the request came from the admin route
+	const paths = req.originalUrl.split('/');
+	const fromAdmin = paths.includes('admin');
+	const response = await factory.signup(req.body, fromAdmin);
 	return res.status(response.code).json(response);
 };
