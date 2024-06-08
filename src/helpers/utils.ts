@@ -4,6 +4,7 @@ import { config } from './config';
 import { IPaging, JWTData, ResultObject } from '../types/generic';
 import { ILog, LogLevelEnum } from '../types/Log';
 import { IUserDocument } from '../types/User';
+import { IFixtureDocument } from '../types/League';
 
 class Utils {
 	static opts = {
@@ -127,6 +128,11 @@ class Utils {
 			}
 		}
 		return res;
+	}
+
+	generateLink(fixture: IFixtureDocument) {
+		const baseUrl = `${config.SERVER_URL}/fixtures/${fixture._id}`;
+		return { rel: 'self', method: 'GET', href: baseUrl };
 	}
 }
 

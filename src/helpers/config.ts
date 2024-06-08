@@ -1,12 +1,14 @@
 const redisPassword = process.env.REDIS_PASSWORD;
 const redisHost = process.env.REDIS_HOST;
 const redisPort = process.env.REDIS_PORT;
+const PORT = process.env.PORT || 8080;
 
 if (!redisPassword || !redisHost || !redisPort) {
 	throw 'MISSING REDIS CONFIG IN ENV';
 }
 
 export const config = {
+	PORT,
 	DATABASE_URL: process.env.DATABASE_URL || '',
 	SESSION_SECRET: process.env.SESSION_SECRET,
 	REDIS_PASSWORD: redisPassword,
@@ -17,4 +19,5 @@ export const config = {
 	EXPIRATION_TIME: Number(process.env.EXPIRATION_TIME) || 20,
 	DEFAULT_PAGE: 1,
 	DEFAULT_LIMIT: 10,
+	SERVER_URL: `http://localhost:${PORT}/api/v1/`,
 };

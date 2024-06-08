@@ -86,7 +86,13 @@ class Fixture {
 				paginationQuery
 			);
 
-			const responseData = { pagination: paginationData, data: fixtures };
+			const responseData = {
+				pagination: paginationData,
+				data: fixtures.map((fixture) => ({
+					...fixture.toObject(),
+					link: _utilsService.generateLink(fixture),
+				})),
+			};
 
 			// store repsonse data in cache
 			_cacheService.setCachedData(cacheKey, responseData);

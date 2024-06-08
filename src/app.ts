@@ -3,9 +3,10 @@ import { LoggerFactory } from './services/factories';
 import { dbFactory } from './database/dbFactory';
 import chalk from 'chalk';
 import bootstrapAppUtilities from './config/utilities';
+import { config } from './helpers/config';
 
 const app = express();
-const PORT = process.env.PORT || 8080;
+const PORT = config.PORT;
 
 bootstrapAppUtilities(app);
 
