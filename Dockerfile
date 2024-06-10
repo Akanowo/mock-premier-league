@@ -1,16 +1,14 @@
-FROM node:16-alpine3.11
-
-RUN apk add --no-cache python3 make g++
+FROM node:18-alpine as build
 
 WORKDIR /usr/src/app
 
 COPY package*.json ./
 
-RUN npm install
+RUN yarn install
 
 COPY . .
 
-RUN npm run build
+RUN yarn build
 
 EXPOSE 9000
 
