@@ -21,7 +21,7 @@ const teamRouter = Router();
 
 teamRouter
 	.route('/')
-	.get(isAuthenticated, joiMiddleware(pagingValidator, 'query'), getAllTeams)
+	.get(joiMiddleware(pagingValidator, 'query'), getAllTeams)
 	.post(
 		isAuthenticated,
 		isAuthorized('admin'),

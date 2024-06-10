@@ -21,11 +21,7 @@ const fixtureRouter = Router();
 
 fixtureRouter
 	.route('/')
-	.get(
-		isAuthenticated,
-		joiMiddleware(getFixturesQueryValidator, 'query'),
-		getAllFixtures
-	)
+	.get(joiMiddleware(getFixturesQueryValidator, 'query'), getAllFixtures)
 	.post(
 		isAuthenticated,
 		isAuthorized('admin'),
