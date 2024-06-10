@@ -108,7 +108,9 @@ class Auth implements IAuth {
 			const userObj = _utilsService.formatUserObj(user);
 
 			// generate access token
-			const token = _utilsService.generateAccessToken({ id: user._id });
+			const token = _utilsService.generateAccessToken({
+				id: user._id as string,
+			});
 
 			// store user in session
 			await _cacheService.setCachedData(`sess:${user._id}`, userObj);
