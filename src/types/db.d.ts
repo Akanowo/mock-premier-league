@@ -17,6 +17,11 @@ export interface DatabaseInterface {
 		query: any,
 		options?: QueryOptions<T>
 	): Promise<any>;
+	lean<T>(
+		collection: string,
+		query: any,
+		options?: QueryOptions<T>
+	): Promise<any>;
 	find<T>(
 		collection: string,
 		query: any,

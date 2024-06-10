@@ -89,7 +89,7 @@ class Fixture {
 			const responseData = {
 				pagination: paginationData,
 				data: fixtures.map((fixture) => ({
-					...fixture.toObject(),
+					...fixture,
 					link: _utilsService.generateLink(fixture),
 				})),
 			};
@@ -200,11 +200,12 @@ class Fixture {
 				ReasonPhrases.CREATED,
 				newFixture
 			);
-		} catch (error) {
+		} catch (error: any) {
 			_loggerService.error(_utilsService.errorData(error, 'createFixture'));
 			return _utilsService.ResultFunction(
 				false,
-				'something went wrong',
+				// 'something went wrong',
+				error.message,
 				StatusCodes.UNPROCESSABLE_ENTITY,
 				ReasonPhrases.UNPROCESSABLE_ENTITY,
 				null

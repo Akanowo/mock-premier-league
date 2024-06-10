@@ -6,11 +6,11 @@ import {
 	ITeam,
 } from '../../types/League';
 import {
+	DATE_AND_REQUIRED,
 	NUMBER_AND_OPTIONAL,
 	NUMBER_AND_REQUIRED,
 	OBJECTID_AND_OPTIONAL,
 	OBJECTID_AND_REQUIRED,
-	OBJECTID_ARRAY_AND_REQUIRED,
 	STRING_AND_OPTIONAL,
 	STRING_AND_REQUIRED,
 } from '../../helpers/constants';
@@ -49,6 +49,7 @@ const fixtureSchema = new Schema<IFixture>(
 		attendance: NUMBER_AND_OPTIONAL,
 		clock: fixtureClockObj,
 		gameweek: NUMBER_AND_REQUIRED,
+		date: DATE_AND_REQUIRED,
 		status: {
 			...STRING_AND_REQUIRED,
 			enum: ['pending', 'ongoing', 'concluded', 'postponed'],

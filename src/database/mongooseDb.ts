@@ -67,6 +67,15 @@ export class MongooseDatabase implements DatabaseInterface {
 		return Model.findOne(query, null, options).exec();
 	}
 
+	async lean<T extends Document>(
+		collection: string,
+		query: any,
+		options: QueryOptions<T> = {}
+	): Promise<Query<any, T>> {
+		const Model = this.getModel<T>(collection);
+		return Model.findOne(query, null, options).lean().exec();
+	}
+
 	async find<T extends Document>(
 		collection: string,
 		query: any,
@@ -113,6 +122,8 @@ export class MongooseDatabase implements DatabaseInterface {
 			.sort(paginationDetails.sort)
 			.skip(paginationDetails.skip)
 			.limit(paginationDetails.limit)
-			.populate(paginationDetails.populate);
+			.populate(paginationDetails.populate)
+			.lean()
+			.exec();
 	}
 }

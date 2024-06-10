@@ -88,6 +88,7 @@ export interface IFixture extends DBTimeLogs {
 	homeTeam: Types.ObjectId | ITeam;
 	awayTeam: Types.ObjectId | ITeam;
 	gameweek: number;
+	date: Date;
 	venue: FixtureVenue;
 	status: FixtureStatusTypes;
 	teamsDetails: Partial<ITeam>[];
