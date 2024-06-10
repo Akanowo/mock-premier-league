@@ -13,7 +13,9 @@ class Team {
 
 	public async getAll(input: IPaging) {
 		const { db, _loggerService, _utilsService, _cacheService } = this.deps;
-		const cacheKey = `teams:page:${input.page}:limit:${input.limit}`;
+		const cacheKey = `teams:page:${input.page}:limit:${input.limit}:search:${
+			input.search ?? ''
+		}`;
 		try {
 			// check if the data is already in cache and return from there instead
 			const cacheData = await _cacheService.getCachedData(cacheKey);
@@ -28,6 +30,8 @@ class Team {
 			}
 
 			let query: FilterQuery<ITeam> = {};
+
+			console.log(input);
 
 			if (input.search) {
 				// search the course title as a regex regardless of case sensitivity

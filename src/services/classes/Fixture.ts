@@ -20,7 +20,9 @@ class Fixture {
 	public async getAll(input: IGetFixtureQuery) {
 		const { db, _loggerService, _utilsService, _cacheService } = this.deps;
 		const { page, limit } = input;
-		const cacheKey = `fixtures:page:${page}:limit:${limit}`;
+		const cacheKey = `fixtures:page:${page}:limit:${limit}:search:${
+			input.search ?? ''
+		}`;
 		try {
 			// check if the data is already in cache and return from there instead
 			const cacheData = await _cacheService.getCachedData(cacheKey);
@@ -40,7 +42,7 @@ class Fixture {
 			if (input.search) {
 				query['$or'] = [
 					{
-						'teamDetails.name': {
+						'teamsDetails.name': {
 							$regex: input.search,
 							$options: 'i',
 						},
