@@ -12,4 +12,4 @@ RUN npm run build
 
 EXPOSE 8080
 
-CMD [ "node", "-r", "dotenv/config", "dist/main.js" ]
+CMD [ "node", "-r", "dotenv/config", "dist/app.js" ]
